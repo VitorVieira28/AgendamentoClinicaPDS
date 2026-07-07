@@ -8,6 +8,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <!-- ADICIONADO: Diz ao NetBeans qual é a classe principal -->
+        <exec.mainClass>com.mycompany.agendamentoclinica.App</exec.mainClass>
     </properties>
     <dependencies>
         <dependency>
@@ -41,6 +43,7 @@
                         <!-- Usage: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
+                            <!-- ADICIONADO: Diz ao JavaFX qual é a classe principal -->
                             <mainClass>com.mycompany.agendamentoclinica.App</mainClass>
                         </configuration>
                     </execution>
