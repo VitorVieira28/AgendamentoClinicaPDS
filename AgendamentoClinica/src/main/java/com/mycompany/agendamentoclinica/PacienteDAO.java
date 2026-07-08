@@ -5,55 +5,75 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class PacienteDAO {
 
-    // Configurações do seu banco de dados local
-    private static final String URL = "jdbc:mysql://localhost:3306/clinica_db";
-    private static final String USER = "root"; // Mude para o seu usuário do MySQL
-    private static final String PASSWORD = "root"; // Mude para a sua senha do MySQL
+    // URL de conexão apontando para um arquivo local na pasta do projeto
+    private static final String URL = "jdbc:sqlite:clinica.db";
 
-    // Método para obter conexão com o banco
-    private Connection obterConexao() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+    // Construtor: Toda vez que o DAO for usado, ele garante que a tabela existe
+    public PacienteDAO() {
+        criarTabelaSeNaoExistir();
     }
 
-    // Salva o paciente no banco de dados real (SCRUM-9)
-    public boolean salvar(Paciente paciente) {
-        String sql = "INSERT INTO pacientes (nome, cpf, email, telefone, senha_criptografada) VALUES (?, ?, ?, ?, ?)";
+    private Connection conectar() throws SQLException {
+        return DriverManager.getConnection(URL);
+    }
+
+    // Cria a tabela automaticamente na primeira execução do programa
+    private void criarTabelaSeNaoExistir() {
+        String sql = "CREATE TABLE IF NOT EXISTS pacientes ("
+                   + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                   + "nome TEXT NOT NULL,"
+                   + "cpf TEXT NOT NULL,"
+                   + "email TEXT NOT NULL UNIQUE,"
+                   + "telefone TEXT,"
+                   + "senha_criptografada TEXT NOT NULL"
+                   + ");";
         
-        try (Connection conn = obterConexao(); 
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
-            stmt.setString(1, paciente.getNome());
-            stmt.setString(2, paciente.getCpf());
-            stmt.setString(3, paciente.getEmail());
-            stmt.setString(4, paciente.getTelefone());
-            stmt.setString(5, paciente.getSenhaCriptografada());
-            
-            stmt.executeUpdate();
-            return true;
-            
+        try (Connection conn = this.conectar();
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
         } catch (SQLException e) {
-            System.out.println("Erro ao salvar no banco: " + e.getMessage());
+            System.out.println("Erro ao inicializar tabela SQLite: " + e.getMessage());
+        }
+    }
+
+    // Método para salvar o paciente no arquivo SQLite
+    public boolean salvar(Paciente paciente) {
+        String sql = "INSERT INTO pacientes(nome, cpf, email, telefone, senha_criptografada) VALUES(?,?,?,?,?)";
+
+        try (Connection conn = this.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, paciente.getNome());
+            pstmt.setString(2, paciente.getCpf());
+            pstmt.setString(3, paciente.getEmail());
+            pstmt.setString(4, paciente.getTelefone());
+            pstmt.setString(5, paciente.getSenhaCriptografada());
+            
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Erro ao salvar no SQLite: " + e.getMessage());
             return false;
         }
     }
 
-    // Verifica se o e-mail já existe direto no banco de dados
+    // Método para verificar e-mail duplicado
     public boolean emailExiste(String email) {
         String sql = "SELECT id FROM pacientes WHERE email = ?";
-        
-        try (Connection conn = obterConexao(); 
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        try (Connection conn = this.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            stmt.setString(1, email);
-            try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next(); // Retorna true se achar algum registro
-            }
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
             
+            return rs.next(); // Retorna true se achar algum registro
         } catch (SQLException e) {
-            System.out.println("Erro ao verificar e-mail: " + e.getMessage());
+            System.out.println("Erro ao verificar email no SQLite: " + e.getMessage());
             return false;
         }
     }
