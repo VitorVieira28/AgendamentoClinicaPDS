@@ -77,4 +77,48 @@ public class PacienteDAO {
             return false;
         }
     }
+    // Método para validar o login do usuário
+    public boolean validarLogin(String email, String senhaCriptografada) {
+        String sql = "SELECT id FROM pacientes WHERE email = ? AND senha_criptografada = ?";
+
+        try (Connection conn = this.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, email);
+            pstmt.setString(2, senhaCriptografada);
+            
+            ResultSet rs = pstmt.executeQuery();
+            
+            // Se o rs.next() for true, significa que ele achou o paciente no banco!
+            return rs.next(); 
+            
+        } catch (SQLException e) {
+            System.out.println("Erro ao validar login no SQLite: " + e.getMessage());
+            return false;
+        }
+    }
+    // Busca os dados do paciente pelo e-mail para salvar na sessão
+    public Paciente buscarPorEmail(String email) {
+        String sql = "SELECT nome, cpf, email, telefone FROM pacientes WHERE email = ?";
+
+        try (Connection conn = this.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                return new Paciente(
+                    rs.getString("nome"),
+                    rs.getString("cpf"),
+                    rs.getString("email"),
+                    rs.getString("telefone"),
+                    "" // Não precisamos da senha na sessão por segurança
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar paciente por email: " + e.getMessage());
+        }
+        return null;
+    }
 }
