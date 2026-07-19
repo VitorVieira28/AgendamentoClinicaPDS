@@ -12,11 +12,16 @@ public class PrimaryController {
 
     @FXML
     private void irParaLogin() throws IOException {
-        App.setRoot("login");
+        App.setRoot("login"); // Abre a tela de login do Paciente
     }
 
     @FXML
     private void irParaCadastroMedico() throws IOException {
-        App.setRoot("cadastro_medico");
+        App.setRoot("cadastro_medico"); // Abre a tela de cadastro do Médico
+    }
+
+    @FXML
+    private void irParaLoginMedico() throws IOException {
+        App.setRoot("login_medico"); // CORREÇÃO: Abre a tela de login do Médico
     }
 }
