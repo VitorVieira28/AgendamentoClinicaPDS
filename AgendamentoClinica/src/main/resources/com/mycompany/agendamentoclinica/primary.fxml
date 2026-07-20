@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
 
-<VBox fx:id="painelPrincipal" focusTraversable="true" alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.agendamentoclinica.PrimaryController">
-   <children>
-      <Label text="Agendamento de Clínica" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-      <Label text="Escolha uma opção para começar:" />
-      
-      <Button mnemonicParsing="false" onAction="#irParaLogin" prefHeight="40.0" prefWidth="200.0" text="Fazer Login" />
-      <Button mnemonicParsing="false" onAction="#irParaCadastro" prefHeight="40.0" prefWidth="200.0" text="Criar Cadastro" />
-   </children>
-   <padding>
-      <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
-   </padding>
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.agendamentoclinica.PrimaryController">
+    <children>
+        <Label text="Sistema de Agendamento de Clínica" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+        <Label text="Selecione uma opção para continuar:" style="-fx-font-size: 14px;" />
+        
+        <VBox alignment="CENTER" spacing="12.0">
+            <children>
+                <Label text="Área do Paciente" style="-fx-font-weight: bold;" />
+                
+                <!-- Botões do Paciente Estilizados -->
+                <Button text="Login (Paciente)" onAction="#irParaLogin" prefWidth="220.0" style="-fx-font-size: 14px; -fx-background-color: #009688; -fx-text-fill: white; -fx-font-weight: bold;" />
+                <Button text="Cadastrar como Paciente" onAction="#irParaCadastroPaciente" prefWidth="220.0" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" />
+                
+                <Label text="Área do Médico" style="-fx-font-weight: bold;">
+                    <VBox.margin> <Insets top="10.0"/> </VBox.margin>
+                </Label>
+                
+                <!-- Botões do Médico Estilizados -->
+                <Button text="Login Médico" onAction="#irParaLoginMedico" prefWidth="220.0" style="-fx-font-size: 14px; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;" />
+                <Button text="Sou Médico (Cadastrar)" onAction="#irParaCadastroMedico" prefWidth="220.0" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" />
+            </children>
+        </VBox>
+    </children>
+    <padding>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+    </padding>
 </VBox>

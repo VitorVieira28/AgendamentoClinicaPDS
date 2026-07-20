@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="15" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.agendamentoclinica.CadastroMedicoController">
+    <Label text="Cadastro de Médico" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    
+    <TextField fx:id="campoNome" promptText="Nome Completo" maxWidth="300"/>
+    <TextField fx:id="campoCrm" promptText="CRM" maxWidth="300"/>
+    <TextField fx:id="campoEmail" promptText="E-mail" maxWidth="300"/>
+    <TextField fx:id="campoTelefone" promptText="Telefone" maxWidth="300"/>
+    <PasswordField fx:id="campoSenha" promptText="Senha" maxWidth="300"/>
+    
+    <Button text="Cadastrar" onAction="#clicouCadastrarMedico" style="-fx-font-weight: bold;"/>
+    
+    <Label fx:id="labelMensagem"/>
+    
+    <!-- Botão da subtarefa SCRUM-37 -->
+    <Button text="Voltar ao início" onAction="#voltarAoInicio"/>
+</VBox>

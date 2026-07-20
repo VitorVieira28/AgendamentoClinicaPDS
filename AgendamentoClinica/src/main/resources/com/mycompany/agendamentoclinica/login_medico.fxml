@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="15" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.agendamentoclinica.LoginMedicoController">
+    <Label text="Login do Médico" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    
+    <TextField fx:id="campoEmail" promptText="E-mail cadastrado" maxWidth="300"/>
+    <PasswordField fx:id="campoSenha" promptText="Senha" maxWidth="300"/>
+    
+    <Button text="Entrar" onAction="#clicouEntrar" style="-fx-font-weight: bold; -fx-background-color: #2196F3; -fx-text-fill: white;"/>
+    
+    <Label fx:id="labelMensagem"/>
+    
+    <Button text="Voltar ao início" onAction="#voltarAoInicio"/>
+</VBox>
