@@ -2,7 +2,7 @@ package com.mycompany.agendamentoclinica;
 
 public class ServicoEmail {
     
-    // Método que simula o envio do e-mail no console
+    
     public static void enviarConfirmacao(String emailDestino, String nomePaciente) {
         System.out.println("\n================= SISTEMA DE E-MAIL =================");
         System.out.println("Enviando e-mail para : " + emailDestino);

@@ -1,5 +1,6 @@
 package com.mycompany.agendamentoclinica;
 
+import javafx.application.Platform; 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -13,6 +14,16 @@ public class CadastroMedicoController {
     @FXML private TextField campoTelefone;
     @FXML private PasswordField campoSenha;
     @FXML private Label labelMensagem;
+
+    
+    @FXML
+    public void initialize() {
+        Platform.runLater(() -> {
+            if (campoNome != null && campoNome.getParent() != null) {
+                campoNome.getParent().requestFocus();
+            }
+        });
+    }
 
     @FXML
     private void clicouCadastrarMedico() {
@@ -42,15 +53,16 @@ public class CadastroMedicoController {
         if (medicoDao.salvar(novoMedico)) {
             labelMensagem.setText("Sucesso: Médico cadastrado no banco com êxito!");
             labelMensagem.setStyle("-fx-text-fill: green;");
-            // Se quiser, pode chamar o ServicoEmail aqui também!
+            
         } else {
             labelMensagem.setText("Erro: Falha ao salvar no banco de dados.");
             labelMensagem.setStyle("-fx-text-fill: red;");
         }
     }
+    
     @FXML
     private void voltarAoInicio() throws java.io.IOException {
-        // Volta para a tela inicial (assumindo que o nome dela seja "primary")
+        
         App.setRoot("primary"); 
     }
 }

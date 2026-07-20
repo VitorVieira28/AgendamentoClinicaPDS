@@ -21,4 +21,11 @@ public class Medico {
     public String getEmail() { return email; }
     public String getTelefone() { return telefone; }
     public String getSenhaCriptografada() { return senhaCriptografada; }
+public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
 }

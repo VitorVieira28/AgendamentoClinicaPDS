@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox focusTraversable="true" alignment="CENTER" spacing="12.0" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.agendamentoclinica.PerfilPacienteController">
+    <children>
+        <Label text="Meu Perfil" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <Label text="Atualize seus dados abaixo. Deixe a senha em branco se não quiser mudar." style="-fx-font-size: 12px; -fx-text-fill: gray;"/>
+        
+        <TextField fx:id="campoNome" promptText="Nome Completo" maxWidth="300"/>
+        <TextField fx:id="campoCpf" promptText="CPF" maxWidth="300"/>
+        <TextField fx:id="campoEmail" promptText="E-mail" maxWidth="300"/>
+        <TextField fx:id="campoTelefone" promptText="Telefone" maxWidth="300"/>
+        <PasswordField fx:id="campoNovaSenha" promptText="Nova Senha (Opcional)" maxWidth="300"/>
+        
+        <Button text="Salvar Alterações" onAction="#clicouSalvar" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" prefWidth="150.0" />
+        
+        <Label fx:id="labelMensagem"/>
+        
+        <Button text="Voltar" onAction="#voltar"/>
+    </children>
+    <padding>
+        <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+    </padding>
+</VBox>

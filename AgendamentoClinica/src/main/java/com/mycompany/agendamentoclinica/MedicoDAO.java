@@ -32,13 +32,14 @@ public class MedicoDAO {
                    + "senha_criptografada TEXT NOT NULL"
                    + ");";
         
-        // --- SCRUM-49: Nova Tabela Relacional para Horários ---
+        // Tabela de horários do médico
         String sqlHorarios = "CREATE TABLE IF NOT EXISTS horarios_medico ("
                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                   + "nome_medico TEXT NOT NULL,"
                    + "data TEXT NOT NULL,"
                    + "horario TEXT NOT NULL,"
-                   + "disponivel INTEGER NOT NULL," // 1 para Vago, 0 para Indisponível
-                   + "UNIQUE(data, horario)"
+                   + "disponivel INTEGER NOT NULL," 
+                   + "UNIQUE(nome_medico, data, horario)"
                    + ");";
         
         try (Connection conn = this.conectar();
@@ -52,7 +53,6 @@ public class MedicoDAO {
 
     public boolean salvar(Medico medico) {
         String sql = "INSERT INTO medicos(nome, crm, email, telefone, senha_criptografada) VALUES(?,?,?,?,?)";
-
         try (Connection conn = this.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
@@ -72,7 +72,6 @@ public class MedicoDAO {
 
     public boolean emailExiste(String email) {
         String sql = "SELECT id FROM medicos WHERE email = ?";
-
         try (Connection conn = this.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
@@ -86,7 +85,6 @@ public class MedicoDAO {
 
     public boolean validarLogin(String email, String senhaCriptografada) {
         String sql = "SELECT id FROM medicos WHERE email = ? AND senha_criptografada = ?";
-
         try (Connection conn = this.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
@@ -118,35 +116,118 @@ public class MedicoDAO {
         return medicos;
     }
 
-    // --- SCRUM-50: Buscar se o horário está disponível (1) ou indisponível (0). Se não existir, assume disponível por padrão ---
-    public int obterStatusHorario(String data, String horario) {
-        String sql = "SELECT disponivel FROM horarios_medico WHERE data = ? AND horario = ?";
+    public Medico buscarPorEmail(String email) {
+        String sql = "SELECT nome, crm, email, telefone FROM medicos WHERE email = ?";
         try (Connection conn = this.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, data);
-            pstmt.setString(2, horario);
+            
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                return new Medico(
+                    rs.getString("nome"),
+                    rs.getString("crm"),
+                    rs.getString("email"),
+                    rs.getString("telefone"),
+                    "" 
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar médico por email: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public void excluirMedicoPorNome(String nome) {
+        String sql = "DELETE FROM medicos WHERE nome = ?";
+        try (Connection conn = this.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, nome);
+            int linhasAfetadas = pstmt.executeUpdate();
+            
+            if (linhasAfetadas > 0) {
+                System.out.println("Médico '" + nome + "' excluído com sucesso!");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao excluir médico: " + e.getMessage());
+        }
+    }
+
+   
+
+    public int obterStatusHorario(String nomeMedico, String data, String horario) {
+        String sql = "SELECT disponivel FROM horarios_medico WHERE nome_medico = ? AND data = ? AND horario = ?";
+        try (Connection conn = this.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, nomeMedico);
+            pstmt.setString(2, data);
+            pstmt.setString(3, horario);
+            
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return rs.getInt("disponivel");
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao obter status do horário: " + e.getMessage());
+            System.out.println("Erro ao obter status da agenda: " + e.getMessage());
         }
-        return 1; // Padrão: Vago/Disponível
+        return 1; 
     }
 
-    // --- SCRUM-50: Atualizar ou inserir a configuração de status do horário ---
-    public void alternarStatusHorario(String data, String horario, int novoStatus) {
-        String sql = "INSERT INTO horarios_medico(data, horario, disponivel) VALUES(?,?,?)"
-                   + "ON CONFLICT(data, horario) DO UPDATE SET disponivel = excluded.disponivel";
+    public boolean alternarStatusHorario(String nomeMedico, String data, String horario, int novoStatus) {
+        String sql = "INSERT INTO horarios_medico(nome_medico, data, horario, disponivel) VALUES(?,?,?,?) "
+                   + "ON CONFLICT(nome_medico, data, horario) DO UPDATE SET disponivel = excluded.disponivel";
         try (Connection conn = this.conectar();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, data);
-            pstmt.setString(2, horario);
-            pstmt.setInt(3, novoStatus);
+            
+            pstmt.setString(1, nomeMedico);
+            pstmt.setString(2, data);
+            pstmt.setString(3, horario);
+            pstmt.setInt(4, novoStatus); 
+            
             pstmt.executeUpdate();
+            return true;
         } catch (SQLException e) {
             System.out.println("Erro ao salvar alteração de horário: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean atualizarPerfil(Medico medico) {
+        String sql = "UPDATE medicos SET nome = ?, telefone = ? WHERE email = ?";
+        try (Connection conn = this.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, medico.getNome());
+            pstmt.setString(2, medico.getTelefone());
+            pstmt.setString(3, medico.getEmail()); 
+            
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Erro ao atualizar perfil do médico: " + e.getMessage());
+            return false;
+        }
+    }
+
+   
+    public boolean atualizarPerfilComSenha(Medico medico, String novaSenhaCriptografada) {
+        String sql = "UPDATE medicos SET nome = ?, telefone = ?, senha_criptografada = ? WHERE email = ?";
+        try (Connection conn = this.conectar();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, medico.getNome());
+            pstmt.setString(2, medico.getTelefone());
+            pstmt.setString(3, novaSenhaCriptografada);
+            pstmt.setString(4, medico.getEmail());
+            
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Erro ao atualizar perfil e senha do médico: " + e.getMessage());
+            return false;
         }
     }
 }

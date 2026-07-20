@@ -1,6 +1,7 @@
 package com.mycompany.agendamentoclinica;
 
 import java.io.IOException;
+import javafx.application.Platform; 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -12,18 +13,32 @@ public class LoginMedicoController {
     @FXML private PasswordField campoSenha;
     @FXML private Label labelMensagem;
 
+    
+    @FXML
+    public void initialize() {
+        Platform.runLater(() -> {
+            if (campoEmail != null && campoEmail.getParent() != null) {
+                campoEmail.getParent().requestFocus();
+            }
+        });
+    }
+
     @FXML
     private void clicouEntrar() throws IOException {
         String email = campoEmail.getText();
         String senha = campoSenha.getText();
 
-        // Criptografa a senha digitada para poder comparar com a do banco
+        
         String senhaCripto = ValidadorSeguranca.criptografarSenha(senha);
 
         MedicoDAO medicoDao = new MedicoDAO();
 
-        // SCRUM-44: Verifica no banco e redireciona para a tela de agenda
+        
         if (medicoDao.validarLogin(email, senhaCripto)) {
+            
+            
+            App.setMedicoLogado(medicoDao.buscarPorEmail(email));
+            
             App.setRoot("agenda_medico");
         } else {
             labelMensagem.setText("Erro: E-mail ou senha incorretos.");

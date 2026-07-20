@@ -3,29 +3,37 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.agendamentoclinica.AgendamentoController">
+<VBox alignment="CENTER" spacing="15" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.agendamentoclinica.AgendamentoController">
     <padding>
         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
     </padding>
 
     <Label text="Agendar Nova Consulta" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-    <Label text="Preencha os dados abaixo para marcar seu horário:" style="-fx-font-size: 14px;"/>
     
-    <VBox alignment="CENTER" spacing="15" style="-fx-background-color: #f4f4f4; -fx-padding: 20; -fx-background-radius: 10;">
-        <ComboBox fx:id="comboMedicos" promptText="Selecione o Profissional" prefWidth="300" onAction="#aoEscolherMedico"/>
-        
-        <!-- Atualizado: Aciona a busca de horários ao escolher a data -->
-        <DatePicker fx:id="datePickerData" promptText="Selecione a Data" prefWidth="300" disable="true" onAction="#aoEscolherData"/>
-        
-        <!-- NOVO: ComboBox de Horários bloqueado por padrão -->
-        <ComboBox fx:id="comboHorarios" promptText="Selecione o Horário" prefWidth="300" disable="true"/>
-        
-        <Label fx:id="labelHorarios" text="Selecione um médico e uma data." style="-fx-text-fill: gray;"/>
+   
+    <VBox fx:id="painelConsultaAtiva" alignment="CENTER" spacing="10" style="-fx-background-color: #e3f2fd; -fx-padding: 20; -fx-background-radius: 10;">
+        <Label text="Você já possui uma consulta agendada!" style="-fx-text-fill: #1565c0; -fx-font-weight: bold; -fx-font-size: 14px;"/>
+        <Label fx:id="labelDetalhesConsulta" style="-fx-font-size: 16px;"/>
+        <Button text="Cancelar Consulta Atual" onAction="#clicouCancelar" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;"/>
     </VBox>
+
     
-    <Button text="Confirmar Agendamento" onAction="#clicouAgendar" prefWidth="300" style="-fx-font-weight: bold; -fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+    <VBox fx:id="painelNovoAgendamento" alignment="CENTER" spacing="15">
+        <Label text="Preencha os dados abaixo para marcar seu horário:" style="-fx-font-size: 14px;"/>
+        <VBox alignment="CENTER" spacing="15" style="-fx-background-color: #f4f4f4; -fx-padding: 20; -fx-background-radius: 10;">
+            <ComboBox fx:id="comboMedicos" promptText="Selecione o Profissional" prefWidth="300" onAction="#aoEscolherMedico"/>
+            <DatePicker fx:id="datePickerData" promptText="Selecione a Data" prefWidth="300" disable="true" onAction="#aoEscolherData"/>
+            <ComboBox fx:id="comboHorarios" promptText="Selecione o Horário" prefWidth="300" disable="true"/>
+            <Label fx:id="labelHorarios" text="Selecione um médico e uma data." style="-fx-text-fill: gray;"/>
+        </VBox>
+        <Button text="Confirmar Agendamento" onAction="#clicouAgendar" prefWidth="300" style="-fx-font-weight: bold; -fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+    </VBox>
     
     <Label fx:id="labelMensagem"/>
     
-    <Button text="Voltar ao início" onAction="#voltarAoInicio"/>
+   
+    <HBox alignment="CENTER" spacing="15">
+        <Button text="Meu Perfil" onAction="#abrirPerfilPaciente" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Button text="Voltar ao início" onAction="#voltarAoInicio"/>
+    </HBox>
 </VBox>

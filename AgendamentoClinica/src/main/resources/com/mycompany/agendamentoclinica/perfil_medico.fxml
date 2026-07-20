@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox alignment="CENTER" spacing="15.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.agendamentoclinica.PerfilMedicoController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    
+    <Label text="Meu Perfil - Médico" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+    
+    <TextField fx:id="txtNome" promptText="Nome Completo" maxWidth="300"/>
+    
+    <!-- CRM e Email bloqueados (editable="false") e com cor cinza -->
+    <TextField fx:id="txtCrm" promptText="CRM" editable="false" style="-fx-background-color: #e0e0e0;" maxWidth="300"/>
+    <TextField fx:id="txtEmail" promptText="E-mail" editable="false" style="-fx-background-color: #e0e0e0;" maxWidth="300"/>
+    
+    <TextField fx:id="txtTelefone" promptText="Telefone" maxWidth="300"/>
+    <PasswordField fx:id="txtNovaSenha" promptText="Nova Senha (deixe em branco para manter)" maxWidth="300"/>
+    
+    <Button text="Salvar Alterações" onAction="#salvarAlteracoes" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
+    
+    <Label fx:id="labelMensagem" text="" />
+    
+    <Button text="Voltar para Agenda" onAction="#voltarParaAgenda" />
+</VBox>

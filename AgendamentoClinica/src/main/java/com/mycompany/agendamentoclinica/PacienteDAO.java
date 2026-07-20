@@ -9,10 +9,10 @@ import java.sql.Statement;
 
 public class PacienteDAO {
 
-    // URL de conexão apontando para um arquivo local na pasta do projeto
+    
     private static final String URL = "jdbc:sqlite:clinica.db";
 
-    // Construtor: Toda vez que o DAO for usado, ele garante que a tabela existe
+   
     public PacienteDAO() {
         criarTabelaSeNaoExistir();
     }
@@ -21,7 +21,7 @@ public class PacienteDAO {
         return DriverManager.getConnection(URL);
     }
 
-    // Cria a tabela automaticamente na primeira execução do programa
+   
     private void criarTabelaSeNaoExistir() {
         String sql = "CREATE TABLE IF NOT EXISTS pacientes ("
                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -40,7 +40,7 @@ public class PacienteDAO {
         }
     }
 
-    // Método para salvar o paciente no arquivo SQLite
+    
     public boolean salvar(Paciente paciente) {
         String sql = "INSERT INTO pacientes(nome, cpf, email, telefone, senha_criptografada) VALUES(?,?,?,?,?)";
 
@@ -61,7 +61,7 @@ public class PacienteDAO {
         }
     }
 
-    // Método para verificar e-mail duplicado
+    
     public boolean emailExiste(String email) {
         String sql = "SELECT id FROM pacientes WHERE email = ?";
 
@@ -71,13 +71,13 @@ public class PacienteDAO {
             pstmt.setString(1, email);
             ResultSet rs = pstmt.executeQuery();
             
-            return rs.next(); // Retorna true se achar algum registro
+            return rs.next();
         } catch (SQLException e) {
             System.out.println("Erro ao verificar email no SQLite: " + e.getMessage());
             return false;
         }
     }
-    // Método para validar o login do usuário
+    
     public boolean validarLogin(String email, String senhaCriptografada) {
         String sql = "SELECT id FROM pacientes WHERE email = ? AND senha_criptografada = ?";
 
@@ -89,7 +89,7 @@ public class PacienteDAO {
             
             ResultSet rs = pstmt.executeQuery();
             
-            // Se o rs.next() for true, significa que ele achou o paciente no banco!
+            
             return rs.next(); 
             
         } catch (SQLException e) {
@@ -97,7 +97,7 @@ public class PacienteDAO {
             return false;
         }
     }
-    // Busca os dados do paciente pelo e-mail para salvar na sessão
+   
     public Paciente buscarPorEmail(String email) {
         String sql = "SELECT nome, cpf, email, telefone FROM pacientes WHERE email = ?";
 
@@ -113,12 +113,39 @@ public class PacienteDAO {
                     rs.getString("cpf"),
                     rs.getString("email"),
                     rs.getString("telefone"),
-                    "" // Não precisamos da senha na sessão por segurança
+                    "" 
                 );
             }
         } catch (SQLException e) {
             System.out.println("Erro ao buscar paciente por email: " + e.getMessage());
         }
         return null;
+    }
+
+    public boolean atualizarDados(String cpf, String nome, String telefone, String senhaCriptografada) {
+        boolean atualizarSenha = (senhaCriptografada != null && !senhaCriptografada.isEmpty());
+        String sql = atualizarSenha 
+            ? "UPDATE pacientes SET nome = ?, telefone = ?, senha_criptografada = ? WHERE cpf = ?"
+            : "UPDATE pacientes SET nome = ?, telefone = ? WHERE cpf = ?";
+
+        try (java.sql.Connection conn = this.conectar();
+             java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, nome);
+            pstmt.setString(2, telefone);
+            
+            if (atualizarSenha) {
+                pstmt.setString(3, senhaCriptografada);
+                pstmt.setString(4, cpf);
+            } else {
+                pstmt.setString(3, cpf);
+            }
+            
+            pstmt.executeUpdate();
+            return true;
+        } catch (java.sql.SQLException e) {
+            System.out.println("Erro ao atualizar paciente no SQLite: " + e.getMessage());
+            return false;
+        }
     }
 }
