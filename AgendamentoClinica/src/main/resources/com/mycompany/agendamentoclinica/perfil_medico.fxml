@@ -12,7 +12,7 @@
     
     <TextField fx:id="txtNome" promptText="Nome Completo" maxWidth="300"/>
     
-    <!-- CRM e Email bloqueados (editable="false") e com cor cinza -->
+    
     <TextField fx:id="txtCrm" promptText="CRM" editable="false" style="-fx-background-color: #e0e0e0;" maxWidth="300"/>
     <TextField fx:id="txtEmail" promptText="E-mail" editable="false" style="-fx-background-color: #e0e0e0;" maxWidth="300"/>
     

@@ -51,7 +51,7 @@ public class CadastroController {
         if (pacienteDao.salvar(novoPaciente)) {
             System.out.println("Cadastro feito com sucesso no banco!");
             
-            // SALVA O PACIENTE RECÉM-CRIADO NA SESSÃO
+            
             App.setPacienteLogado(novoPaciente);
             
             try {

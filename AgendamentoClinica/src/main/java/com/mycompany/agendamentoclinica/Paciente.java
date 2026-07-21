@@ -16,7 +16,7 @@ public class Paciente {
         this.senhaCriptografada = senhaCriptografada;
     }
 
-    // Getters e Setters (Necessários para acessar os dados com segurança)
+    // Getters e Setters 
     public String getNome() { return nome; }
     public String getCpf() { return cpf; }
     public String getEmail() { return email; }

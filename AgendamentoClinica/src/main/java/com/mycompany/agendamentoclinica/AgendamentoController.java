@@ -36,7 +36,7 @@ public class AgendamentoController {
         
         datePickerData.setEditable(false);
         
-        // NOVO: Abre o calendário clicando em qualquer lugar da caixa de texto!
+        
         datePickerData.getEditor().setOnMouseClicked(e -> datePickerData.show());
         
         List<String> nomesMedicos = medicoDao.listarNomesMedicos();

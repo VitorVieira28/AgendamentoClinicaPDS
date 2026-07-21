@@ -30,7 +30,7 @@ public class AgendaMedicoController {
         bloquearDatasPassadas();
         datePickerAgenda.setEditable(false);
         
-        // NOVO: Abre o calendário clicando em qualquer lugar da caixa de texto!
+        
         datePickerAgenda.getEditor().setOnMouseClicked(e -> datePickerAgenda.show());
 
         listaHorarios.setCellFactory(lv -> new ListCell<String>() {
@@ -45,7 +45,7 @@ public class AgendaMedicoController {
                     if (item.contains("Ocupado")) {
                         setStyle("-fx-text-fill: #888888; -fx-font-style: italic;"); 
                     } else {
-                        // Negrito removido! Ficará com a fonte padrão preta.
+                        
                         setStyle("-fx-text-fill: #000000;"); 
                     }
                 }

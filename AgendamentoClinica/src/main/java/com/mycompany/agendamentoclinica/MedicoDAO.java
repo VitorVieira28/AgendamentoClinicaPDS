@@ -32,7 +32,7 @@ public class MedicoDAO {
                    + "senha_criptografada TEXT NOT NULL"
                    + ");";
         
-        // Tabela de horários do médico
+        
         String sqlHorarios = "CREATE TABLE IF NOT EXISTS horarios_medico ("
                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                    + "nome_medico TEXT NOT NULL,"

@@ -13,7 +13,7 @@
             <children>
                 <Label text="Área do Paciente" style="-fx-font-weight: bold;" />
                 
-                <!-- Botões do Paciente Estilizados -->
+               
                 <Button text="Login (Paciente)" onAction="#irParaLogin" prefWidth="220.0" style="-fx-font-size: 14px; -fx-background-color: #009688; -fx-text-fill: white; -fx-font-weight: bold;" />
                 <Button text="Cadastrar como Paciente" onAction="#irParaCadastroPaciente" prefWidth="220.0" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" />
                 
@@ -21,7 +21,7 @@
                     <VBox.margin> <Insets top="10.0"/> </VBox.margin>
                 </Label>
                 
-                <!-- Botões do Médico Estilizados -->
+                
                 <Button text="Login Médico" onAction="#irParaLoginMedico" prefWidth="220.0" style="-fx-font-size: 14px; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;" />
                 <Button text="Sou Médico (Cadastrar)" onAction="#irParaCadastroMedico" prefWidth="220.0" style="-fx-font-size: 14px; -fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" />
             </children>

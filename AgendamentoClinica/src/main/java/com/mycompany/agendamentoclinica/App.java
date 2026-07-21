@@ -13,7 +13,7 @@ public class App extends Application {
 
     private static Scene scene;
     
-    // VARIÁVEL PARA GUARDAR O PACIENTE LOGADO NA SESSÃO
+    
     private static Paciente pacienteLogado;
 
     public static Paciente getPacienteLogado() {
@@ -24,7 +24,7 @@ public class App extends Application {
         pacienteLogado = paciente;
     }
 
-    // VARIÁVEL PARA GUARDAR O MÉDICO LOGADO NA SESSÃO
+    
     private static Medico medicoLogado;
 
     public static Medico getMedicoLogado() {
