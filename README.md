@@ -55,11 +55,5 @@ Inicie a IDE de sua preferência, vá em `File > Open` (ou Import) e selecione a
 **4. Rode a aplicação**  
 No explorador de arquivos da IDE, navegue até a classe principal do sistema, clique com o botão direito e selecione **Run**. A tela inicial do sistema deverá abrir automaticamente!
 
----
-
-### 👥 Equipe de Desenvolvimento
-*   **Product Owner:** Pedro Henrique
-*   **Scrum Master:** Francisco
-*   **Desenvolvedores:** Vitor Vieira, Allan Silva, Victor Rodrigues e Guilherme Cunha
 
 **Nota:** A documentação detalhada, incluindo requisitos, histórico de sprints (Scrum) e diagramas de arquitetura, pode ser encontrada na Wiki deste repositório.
